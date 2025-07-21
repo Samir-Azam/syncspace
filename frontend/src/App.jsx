@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Homepage from './pages/Homepage.jsx'
+import SignUppage from './pages/SignUppage'
+import Callpage from './pages/Callpage'
+import Chatpage from './pages/Chatpage'
+import LoginPage from './pages/LoginPage'
+import Notificationpage from './pages/Notificationpage'
+import OnBoardingpage from './pages/OnBoardingpage'
+import  { Toaster } from 'react-hot-toast'
+import { useQuery } from '@tanstack/react-query'
+import { axiosInstance } from './lib/axios.js'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
 
+  const {data:authData, isLoading, error} = useQuery({queryKey:["authUser"],
+    queryFn : async ()=>{
+      const res = await axiosInstance.get("/auth/me")
+      return res.data
+    },
+    retry:false
+  },)
+  
+  const authUser = authData?.user
+  
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="h-screen" data-theme="dark">
+      <Routes>
+        <Route
+          path="/"
+          element={authUser ? <Homepage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <SignUppage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/call"
+          element={authUser ? <Callpage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/chat"
+          element={authUser ? <Chatpage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/notification"
+          element={authUser ? <Notificationpage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/onboarding"
+          element={!authUser ? <OnBoardingpage /> : <Navigate to="/signup" />}
+        />
+      </Routes>
+      <Toaster />
+    </div>
+  );
 }
 
 export default App
