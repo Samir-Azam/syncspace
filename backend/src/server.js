@@ -13,16 +13,15 @@ app.use(cookieParser())
 
 import authRoute from './routes/auth.route.js'
 import userRoute from './routes/user.route.js'
+import chatRoute from './routes/chat.route.js'
 
 app.use("/api/auth",authRoute)
 app.use("/api/user",userRoute)
+app.use("/api/user",chatRoute)
 
-try {
-    connectDB()
-    app.listen(port,(req, res)=>{
-        console.log(`server is running at ${port}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+  connectDB();
+});
         
-    })
-} catch (error) {
-    console.log("Error in connecting MongoDB")
-}
+    
