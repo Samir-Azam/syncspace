@@ -88,7 +88,7 @@ export async function login(req, res) {
         .json({ message: "User with this email does not exist" });
     }
   
-    const isPasswordCorrect = await user.comparePassword(password);
+    const isPasswordCorrect = await user.matchPassword(password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Password is incorrect" });
     }
@@ -122,14 +122,14 @@ export function logout(req, res) {
 export async function onboarding(req, res){
     try {
       const userId = req.user._id;
-      const { fullName, bio, nativeLanguage, learningLanguage, locations } =
+      const { fullName, bio, nativeLanguage, learningLanguage, location } =
         req.body;
       if (
         !fullName ||
         !bio ||
         !nativeLanguage ||
         !learningLanguage ||
-        !locations
+        !location
       ) {
         return res.status(400).json({
           message: "All fields are mandatory",
@@ -138,7 +138,7 @@ export async function onboarding(req, res){
             !bio && "bio",
             !nativeLanguage && "nativeLanguage",
             !learningLanguage && "learningLanguage",
-            !locations && "locations",
+            !location && "location",
           ].filter(Boolean),
         });
       }
