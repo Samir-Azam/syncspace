@@ -20,8 +20,8 @@ import userRoute from './routes/user.route.js'
 import chatRoute from './routes/chat.route.js'
 
 app.use("/api/auth",authRoute)
-app.use("/api/user",userRoute)
-app.use("/api/user",chatRoute)
+app.use("/api/users",userRoute)
+app.use("/api/chat",chatRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -3,8 +3,8 @@ import { useState } from "react";
 import {Link} from 'react-router-dom'
 import {useMutation} from '@tanstack/react-query'
 import { useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../lib/axios.js";
 import { signup } from "../lib/api.js";
+import { useThemeStore } from "../store/useThemeStore.js";
 
 const SignUppage = () => {
   const [signupData, setSignupData] = useState({
@@ -14,7 +14,8 @@ const SignUppage = () => {
   });
 
   const queryClient = useQueryClient();
-
+  const {theme} = useThemeStore()
+ 
   const { mutate, isPending, error } = useMutation({
     mutationFn: signup,
     onSuccess: () => {
@@ -32,7 +33,7 @@ const SignUppage = () => {
   return (
     <div
       className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
-      data-theme="forest"
+      data-theme={theme}
     >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
         {/* SIGNUP FORM - LEFT SIDE */}
