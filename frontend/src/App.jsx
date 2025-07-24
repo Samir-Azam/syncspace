@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+
 import Homepage from './pages/Homepage.jsx'
 import SignUppage from './pages/SignUppage'
 import Callpage from './pages/Callpage'
@@ -6,7 +7,10 @@ import Chatpage from './pages/Chatpage'
 import LoginPage from './pages/LoginPage'
 import Notificationpage from './pages/Notificationpage'
 import OnBoardingpage from './pages/OnBoardingpage'
+import FriendsPage from "./pages/FriendsPage.jsx";
+
 import  { Toaster } from 'react-hot-toast'
+  
 import PageLoader from './components/PageLoader.jsx'
 import useAuthUser from './hooks/useAuthUser.js'
 import Layout from './components/Layout.jsx'
@@ -64,6 +68,18 @@ const App = () => {
             isAuthenticated && isOnboarded ? (
               <Layout showSidebar={true}>
                 <Notificationpage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={true}>
+                <FriendsPage />
               </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />

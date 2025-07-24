@@ -18,8 +18,10 @@ import { capitialize } from "../lib/utils.js";
 
 import FriendCard, { getLanguageFlag } from "../components/FriendCard";
 import NoFriendsFound from "../components/NoFriendsFound";
+import { useThemeStore } from "../store/useThemeStore.js";
 
 const Homepage = () => {
+  const {theme} = useThemeStore()
   const queryClient = useQueryClient();
   const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
 
@@ -55,7 +57,7 @@ const Homepage = () => {
   }, [outgoingFriendReqs]);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="w-auto h-auto p-4 sm:p-6 lg:p-8" data-theme={theme}>
       <div className="container mx-auto space-y-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
